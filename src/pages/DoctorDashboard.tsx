@@ -4,10 +4,11 @@ import { Sidebar } from "../components/Sidebar";
 import Header from "../components/Header";
 
 import { StatCard } from "../components/StatCard";
-import { HospitalSurvey } from "../components/HospitalSurvey";
-import { CommonDiseasesReport } from "../components/CommonDiseasesReport";
 import { BookedAppointments } from "../components/BookedAppointments";
 import { DoctorsList } from "../components/DoctorsList";
+
+import { HospitalSurvey } from "../components/HospitalSurvey";
+import { CommonDiseasesReport } from "../components/CommonDiseasesReport";
 
 import {
   Activity,
@@ -38,16 +39,41 @@ export default function DoctorDashboard({ user }: DoctorDashboardProps) {
   const [error] = useState<string | null>(null);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const [loadingSearch, setLoadingSearch] = useState(false);
   const [startingVisit, setStartingVisit] = useState(false);
-  const [visitType, setVisitType] = useState<"NEW" | "FOLLOW_UP">("NEW");
+  const [visitType] = useState<"NEW" | "FOLLOW_UP">("NEW");
+
+  const [stats, setStats] = useState<any>({
+    appointments: 0,
+    operations: 0,
+    newPatients: 0,
+    earnings: 0,
+    recentAppointments: [],
+    doctorsList: [],
+    patientSurveyData: [],
+    dentalIssuesData: []
+  });
 
   function searchPatient() {
-  if (!query.trim()) return;
-  navigate(`/doctor/patient/${query}`);
-}
+    if (!query.trim()) return;
+    navigate(`/doctor/patient/${query}`);
+  }
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/dashboard/stats", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch stats", err);
+    }
+  };
 
   useEffect(() => {
+    fetchStats();
     if (queryFromUrl) {
       setQuery(queryFromUrl);
       searchPatient();
@@ -181,20 +207,20 @@ export default function DoctorDashboard({ user }: DoctorDashboardProps) {
           ) : (
             <>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-                <StatCard icon={CalendarCheck} label="Appointments" value="680" />
-                <StatCard icon={Activity} label="Operations" value="170" />
-                <StatCard icon={Users} label="New Patients" value="280" />
-                <StatCard icon={IndianRupee} label="Earnings" value="₹1,286" />
+                <StatCard icon={CalendarCheck} label="Appointments" value={stats.appointments.toString()} />
+                <StatCard icon={Activity} label="Operations" value={stats.operations.toString()} />
+                <StatCard icon={Users} label="New Patients" value={stats.newPatients.toString()} />
+                <StatCard icon={IndianRupee} label="Earnings" value={`₹${stats.earnings}`} />
               </div>
 
               <div className="grid lg:grid-cols-2 gap-3 mb-3">
-                <HospitalSurvey />
-                <CommonDiseasesReport />
+                <HospitalSurvey data={stats.patientSurveyData} />
+                <CommonDiseasesReport data={stats.dentalIssuesData} />
               </div>
 
               <div className="grid lg:grid-cols-2 gap-3">
-                <BookedAppointments />
-                <DoctorsList />
+                <BookedAppointments appointments={stats.recentAppointments} />
+                <DoctorsList doctors={stats.doctorsList} />
               </div>
             </>
           )}

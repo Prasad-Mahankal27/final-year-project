@@ -2,12 +2,6 @@ import {
   LayoutDashboard,
   Calendar,
   Users,
-  UserCheck,
-  UsersRound,
-  DoorOpen,
-  CreditCard,
-  FileText,
-  Ambulance,
   Settings,
   LogOut,
   Plus,
@@ -30,13 +24,7 @@ export function Sidebar({
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", hasAdd: false },
     { icon: Calendar, label: "Appointments", hasAdd: true },
-    { icon: Users, label: "Doctors", hasAdd: true },
-    { icon: UserCheck, label: "Staff", hasAdd: false },
-    { icon: UsersRound, label: "Patients", hasAdd: true },
-    { icon: DoorOpen, label: "Room Allotment", hasAdd: true },
-    { icon: CreditCard, label: "Billing", hasAdd: false },
-    { icon: FileText, label: "Records", hasAdd: false },
-    { icon: Ambulance, label: "Ambulance", hasAdd: false }
+    { icon: Users, label: "Doctors", hasAdd: true }
   ];
 
   return (

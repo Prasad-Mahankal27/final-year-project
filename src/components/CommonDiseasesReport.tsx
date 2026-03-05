@@ -8,37 +8,33 @@ import {
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 
-const data = [
-  { date: "10 Apr", coldsAndFlu: 45, allergies: 52, headaches: 38 },
-  { date: "11 Apr", coldsAndFlu: 58, allergies: 48, headaches: 42 },
-  { date: "12 Apr", coldsAndFlu: 68, allergies: 62, headaches: 55 },
-  { date: "13 Apr", coldsAndFlu: 52, allergies: 70, headaches: 48 },
-  { date: "14 Apr", coldsAndFlu: 45, allergies: 82, headaches: 72 },
-  { date: "15 Apr", coldsAndFlu: 72, allergies: 68, headaches: 58 },
-  { date: "16 Apr", coldsAndFlu: 85, allergies: 92, headaches: 78 }
-];
+interface CommonDiseasesReportProps {
+  data?: any[];
+}
 
-export function CommonDiseasesReport() {
+const defaultData: any[] = [];
+
+export function CommonDiseasesReport({ data = defaultData }: CommonDiseasesReportProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-start justify-between mb-2">
         <div>
           <h3 className="text-sm font-semibold text-gray-900">
-            Common Diseases Report
+            Dental Issues Report
           </h3>
 
           <div className="flex items-center gap-4 mt-1 text-xs text-gray-600">
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-              Colds & Flu
+              Cavities
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-              Allergies
+              Gum Disease
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-blue-800"></span>
-              Headaches
+              Root Canals
             </div>
           </div>
         </div>
@@ -65,17 +61,17 @@ export function CommonDiseasesReport() {
               tick={{ fill: "#9ca3af", fontSize: 10 }}
             />
             <Bar
-              dataKey="coldsAndFlu"
+              dataKey="cavities"
               fill="#60a5fa"
               radius={[3, 3, 0, 0]}
             />
             <Bar
-              dataKey="allergies"
+              dataKey="gumDisease"
               fill="#2563eb"
               radius={[3, 3, 0, 0]}
             />
             <Bar
-              dataKey="headaches"
+              dataKey="rootCanals"
               fill="#1e40af"
               radius={[3, 3, 0, 0]}
             />
@@ -84,10 +80,10 @@ export function CommonDiseasesReport() {
       </div>
 
       <div className="mt-2 flex items-center gap-4 text-xs text-gray-600">
-        <span>13 Apr</span>
+        <span>Recent Trend</span>
         <div className="flex items-center gap-1">
           <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-          Allergies 92
+          Common Issues
         </div>
       </div>
     </div>

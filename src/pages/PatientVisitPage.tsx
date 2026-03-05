@@ -14,7 +14,7 @@ export default function PatientVisitsPage({ token }: Props) {
   const [visits, setVisits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [visitType, setVisitType] = useState<"NEW" | "FOLLOW_UP">("NEW");
+  const visitType: "NEW" | "FOLLOW_UP" = "NEW";
 
   useEffect(() => {
     if (!patientId) return;
@@ -51,10 +51,16 @@ export default function PatientVisitsPage({ token }: Props) {
   }, [patientId, token]);
 
 
-      const latestOutstanding = useMemo(() => {
-    if (!visits.length) return 0;
-    return visits[0]?.bill?.updatedPending || 0;
-    }, [visits]);
+  const filteredVisits = useMemo(() => {
+    return visits.filter(v => v.bill);
+  }, [visits]);
+
+  const latestOutstanding = useMemo(() => {
+    if (!filteredVisits.length) return 0;
+    // Find the most recent visit that has a non-zero updatedPending
+    const visitWithPending = filteredVisits.find(v => (v.bill?.updatedPending || 0) > 0);
+    return visitWithPending ? visitWithPending.bill.updatedPending : 0;
+  }, [filteredVisits]);
 
 
   async function startNewVisit() {
@@ -138,7 +144,7 @@ export default function PatientVisitsPage({ token }: Props) {
             </tr>
           </thead>
           <tbody>
-            {visits.map(v => (
+            {filteredVisits.map(v => (
               <tr
                 key={v.visitId}
                 className="hover:bg-gray-50 cursor-pointer"

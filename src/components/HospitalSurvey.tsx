@@ -8,23 +8,19 @@ import {
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 
-const data = [
-  { date: "10 Apr", newPatients: 62, oldPatients: 44 },
-  { date: "11 Apr", newPatients: 55, oldPatients: 52 },
-  { date: "12 Apr", newPatients: 58, oldPatients: 48 },
-  { date: "13 Apr", newPatients: 75, oldPatients: 84 },
-  { date: "14 Apr", newPatients: 82, oldPatients: 78 },
-  { date: "15 Apr", newPatients: 78, oldPatients: 72 },
-  { date: "16 Apr", newPatients: 68, oldPatients: 65 }
-];
+interface HospitalSurveyProps {
+  data?: any[];
+}
 
-export function HospitalSurvey() {
+const defaultData: any[] = [];
+
+export function HospitalSurvey({ data = defaultData }: HospitalSurveyProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-start justify-between mb-2">
         <div>
           <h3 className="text-sm font-semibold text-gray-900">
-            Hospital Survey
+            Patient Survey
           </h3>
 
           <div className="flex items-center gap-4 mt-1 text-xs text-gray-600">
@@ -34,7 +30,7 @@ export function HospitalSurvey() {
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-blue-500" />
-              Old Patients
+              Recurring Patients
             </div>
           </div>
         </div>
@@ -73,7 +69,7 @@ export function HospitalSurvey() {
 
             <Line
               type="monotone"
-              dataKey="oldPatients"
+              dataKey="recurringPatients"
               stroke="#3b82f6"
               strokeWidth={2}
               dot={false}
@@ -83,14 +79,14 @@ export function HospitalSurvey() {
       </div>
 
       <div className="mt-2 flex items-center gap-4 text-xs text-gray-600">
-        <span>13 Apr</span>
+        <span>Recent Trend</span>
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-pink-500" />
-          New Patients 62
+          New Patients
         </div>
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-blue-500" />
-          Old Patients 44
+          Recurring
         </div>
       </div>
     </div>
